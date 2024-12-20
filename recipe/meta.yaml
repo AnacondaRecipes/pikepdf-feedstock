@@ -6,7 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  #url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: file:///Users/jolivieri/repos/upstream/pikepdf-9.4.2.tar.gz
   sha256: 03fb70ff4fada9cba864d04033f4166b5bf7fa85c90cdc05afd0ab87c9ccaa1a
 
 build:
@@ -35,8 +36,20 @@ requirements:
     - packaging
 
 test:
+  source_files:
+    - tests
   imports:
     - pikepdf
+  requires:
+    - pytest >=6.2.5
+    - python-dateutil >=2.8.1
+    - attrs >=20.2.0
+    - hypothesis >=6.36
+    - numpy >=1.21  # [x86_64]
+    - psutil >=5.9  # [not win]
+    - tomli  # [py<311]
+  commands:
+    - pytest tests
 
 about:
   home: https://github.com/pikepdf/pikepdf
