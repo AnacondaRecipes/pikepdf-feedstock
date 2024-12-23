@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 03fb70ff4fada9cba864d04033f4166b5bf7fa85c90cdc05afd0ab87c9ccaa1a
+  sha256: 0108c063bc56dc2dbfc87f20533a728342a938f4c85e39773866b71255aa8388
   patches:
     - 0001-update-paths.patch
 
@@ -31,7 +31,6 @@ requirements:
     - qpdf
   run:
     - python
-    - setuptools
     - deprecation
     - lxml >=4.8
     - qpdf >=10.6.2
