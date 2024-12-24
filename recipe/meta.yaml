@@ -45,6 +45,7 @@ test:
   imports:
     - pikepdf
   requires:
+    - pip
     - pytest >=6.2.5
     - python-dateutil >=2.8.1
     - attrs >=20.2.0
@@ -53,6 +54,7 @@ test:
     - psutil >=5.9  # [not win]
     - tomli  # [py<311]
   commands:
+    - pip check
     - pytest tests
 
 about:
