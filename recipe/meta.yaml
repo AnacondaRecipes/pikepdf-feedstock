@@ -61,7 +61,10 @@ about:
   license_family: OTHER
   license_file: LICENSE.txt
   summary: A Python library for reading and writing PDF, powered by qpdf
-  doc_url: https://pikepdf.readthedocs.io/
+  description: |
+    pikepdf is a Python library allowing creation, manipulation and repair of PDFs. It provides a Pythonic wrapper
+    around the C++ PDF content transformation library, QPDF.
+  doc_url: https://pikepdf.readthedocs.io
   dev_url: https://github.com/pikepdf/pikepdf
 
 extra:
