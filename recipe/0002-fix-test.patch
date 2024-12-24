@@ -25,7 +25,7 @@ index 3eea5a4..5992bd3 100644
      from pikepdf import _core
  
 -    with open(Path(__file__).parent / '../pyproject.toml', 'rb') as f:
-+    pyproject_toml = os.path.join(os.getenv('PWD'), '..', 'work_moved_*', 'pyproject.toml')
++    pyproject_toml = os.path.join(os.getcwd(), '..', 'work_moved_*', 'pyproject.toml')
 +    matching_files = glob.glob(pyproject_toml)
 +
 +    with open(matching_files[0], 'rb') as f:
