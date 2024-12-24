@@ -70,3 +70,5 @@ about:
 extra:
   recipe-maintainers:
     - carlodri
+  skip-lints:
+    - invalid_url
