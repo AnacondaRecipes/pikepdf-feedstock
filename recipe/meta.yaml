@@ -10,6 +10,7 @@ source:
   sha256: 0108c063bc56dc2dbfc87f20533a728342a938f4c85e39773866b71255aa8388
   patches:
     - 0001-update-paths.patch
+    - 0002-fix-test.patch
 
 build:
   number: 0
