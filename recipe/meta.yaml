@@ -15,7 +15,8 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  skip: true  # [py<38]
+  # skip s390x because of missing qpdf
+  skip: true  # [py<38 or s390x]
 
 requirements:
   build:
