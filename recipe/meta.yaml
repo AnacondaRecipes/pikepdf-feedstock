@@ -27,10 +27,10 @@ requirements:
   host:
     - python
     - pip
-    - setuptools_scm >=7.0.5
+    - setuptools_scm 8.1.0
     - wheel
-    - pybind11 >=2.12.0
-    - qpdf
+    - pybind11 2.13.6
+    - qpdf 11.9.1
   run:
     - python
     - deprecation
