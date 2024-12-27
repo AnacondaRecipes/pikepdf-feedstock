@@ -1,0 +1,25 @@
+From 0459aa815e687c61af9be1aaa202fc28b1bc62f6 Mon Sep 17 00:00:00 2001
+From: Jack Olivieri <jolivieri@anaconda.com>
+Date: Fri, 27 Dec 2024 11:36:44 +0100
+Subject: [PATCH] do not require deprecated
+
+---
+ pyproject.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index be494cc6..be65e14e 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -30,7 +30,7 @@ classifiers = [
+   "Topic :: Multimedia :: Graphics",
+   "Topic :: Software Development :: Libraries",
+ ]
+-dependencies = ["Pillow>=10.0.1", "Deprecated", "lxml>=4.8", "packaging"]
++dependencies = ["Pillow>=10.0.1", "lxml>=4.8", "packaging"]
+ 
+ [project.urls]
+ documentation = "https://pikepdf.readthedocs.io/"
+-- 
+2.39.5 (Apple Git-154)
+
