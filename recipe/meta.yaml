@@ -9,9 +9,9 @@ source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 0108c063bc56dc2dbfc87f20533a728342a938f4c85e39773866b71255aa8388
   patches:
-    - 0001-update-paths.patch
-    - 0002-fix-test.patch
-    - 0003-do-not-require-deprecated.patch
+    - patches/0001-update-paths.patch
+    - patches/0002-fix-test.patch
+    - patches/0003-do-not-require-deprecated.patch
 
 build:
   number: 0
