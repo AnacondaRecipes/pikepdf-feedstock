@@ -28,9 +28,9 @@ requirements:
   host:
     - python
     - pip
-    - setuptools_scm 8.1.0
+    - setuptools >=61
     - wheel
-    - pybind11 2.13.6
+    - pybind11 2.12.0
     - qpdf 11.9.1
   run:
     - python
