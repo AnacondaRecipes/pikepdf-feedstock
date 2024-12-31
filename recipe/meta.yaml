@@ -34,7 +34,6 @@ requirements:
     - qpdf 11.9.1
   run:
     - python
-    - deprecation
     - lxml >=4.8
     - qpdf >=10.6.2
     - pillow >=10.0.1
