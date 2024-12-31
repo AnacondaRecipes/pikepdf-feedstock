@@ -1,0 +1,37 @@
+From e9dccc02ae36d6c36d65919008680be6b11f5dcd Mon Sep 17 00:00:00 2001
+From: Jack Olivieri <jolivieri@anaconda.com>
+Date: Mon, 23 Dec 2024 16:14:00 +0100
+Subject: [PATCH] fix test
+
+---
+ tests/test_sanity.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/tests/test_sanity.py b/tests/test_sanity.py
+index 3eea5a4..5992bd3 100644
+--- a/tests/test_sanity.py
++++ b/tests/test_sanity.py
+@@ -9,6 +9,8 @@ from __future__ import annotations
+ 
+ import ast
+ import gc
++import os
++import glob
+ from contextlib import suppress
+ from pathlib import Path
+ from shutil import copy
+@@ -29,7 +31,10 @@ from pikepdf import Name, Object, Page, Pdf, Stream
+ def test_minimum_qpdf_version():
+     from pikepdf import _core
+ 
+-    with open(Path(__file__).parent / '../pyproject.toml', 'rb') as f:
++    pyproject_toml = os.path.join(os.getcwd(), '..', 'work_moved_*', 'pyproject.toml')
++    matching_files = glob.glob(pyproject_toml)
++
++    with open(matching_files[0], 'rb') as f:
+         pyproject_toml = tomllib.load(f)
+     toml_env = pyproject_toml['tool']['cibuildwheel']['environment']
+     assert Version(_core.qpdf_version()) >= Version(toml_env['QPDF_MIN_VERSION'])
+-- 
+2.39.5 (Apple Git-154)
+

@@ -1,5 +1,5 @@
 {% set name = "pikepdf" %}
-{% set version = "5.6.1" %}
+{% set version = "9.4.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,39 +7,55 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 03fb70ff4fada9cba864d04033f4166b5bf7fa85c90cdc05afd0ab87c9ccaa1a
+  sha256: 0108c063bc56dc2dbfc87f20533a728342a938f4c85e39773866b71255aa8388
+  patches:
+    - patches/0001-update-paths.patch
+    - patches/0002-fix-test.patch
+    - patches/0003-do-not-require-deprecated.patch
 
 build:
-  number: 1
-  script: {{ PYTHON }} -m pip install . -vv
-  skip: true  # [win or py<37]
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  # skip s390x because of missing qpdf
+  skip: true  # [py<39 or s390x]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - patch  # [not win]
+    - m2-patch  # [win]
   host:
     - python
     - pip
-    - setuptools_scm >=4.1
-    - wheel >=0.35
-    - setuptools_scm_git_archive
-    - pybind11 >=2.6.0,< 3
-    - qpdf >=10.6.2
+    - setuptools >=61
+    - wheel
+    - pybind11 2.12.0
+    - qpdf 11.9.1
   run:
     - python
-    - setuptools
-    - deprecation
-    - lxml >=4
+    - lxml >=4.8
     - qpdf >=10.6.2
-    - pillow >=6
+    - pillow >=10.0.1
     - packaging
-    - importlib-metadata >=4  # [py<38]
-    - typing-extensions >=4  # [py<38]
 
 test:
+  source_files:
+    - tests
   imports:
     - pikepdf
+  requires:
+    - pip
+    - pytest >=6.2.5
+    - python-dateutil >=2.8.1
+    - attrs >=20.2.0
+    - hypothesis
+    - numpy >=1.21  # [x86_64]
+    - psutil >=5.9  # [not win]
+    - tomli  # [py<311]
+  commands:
+    - pip check
+    - pytest tests
 
 about:
   home: https://github.com/pikepdf/pikepdf
@@ -47,9 +63,14 @@ about:
   license_family: OTHER
   license_file: LICENSE.txt
   summary: A Python library for reading and writing PDF, powered by qpdf
-  doc_url: https://pikepdf.readthedocs.io/
+  description: |
+    pikepdf is a Python library allowing creation, manipulation and repair of PDFs. It provides a Pythonic wrapper
+    around the C++ PDF content transformation library, QPDF.
+  doc_url: https://pikepdf.readthedocs.io
   dev_url: https://github.com/pikepdf/pikepdf
 
 extra:
   recipe-maintainers:
     - carlodri
+  skip-lints:
+    - invalid_url
