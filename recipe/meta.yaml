@@ -19,16 +19,21 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - cmake
+    - make  # [unix]
+    - ninja-base  # [win]
   host:
     - pip
     - python
     - scikit-build-core>=0.10
     - nanobind >=2.0
+    - qpdf =12.3.2
   run:
     - python
     - pillow >=10.0.1
     - lxml >=4.8    
     - packaging
+    - qpdf =12.3.2
 
 test:
   source_files:
