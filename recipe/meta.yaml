@@ -36,7 +36,7 @@ requirements:
     - pillow >=10.0.1
     - lxml >=4.8    
     - packaging
-    - qpdf =12.3.2
+    - qpdf >=12.3.2,<13
 
 # Unrecognized -n in pytest from the pyproject.toml
 {% set deselect_tests = " --deselect=tests/test_sanity.py::test_minimum_qpdf_version" %}
