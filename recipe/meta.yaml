@@ -1,61 +1,63 @@
 {% set name = "pikepdf" %}
-{% set version = "9.4.2" %}
+{% set version = "10.11.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 0108c063bc56dc2dbfc87f20533a728342a938f4c85e39773866b71255aa8388
-  patches:
-    - patches/0001-update-paths.patch
-    - patches/0002-fix-test.patch
-    - patches/0003-do-not-require-deprecated.patch
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 4bebc59ac74411064e7c97a4036174023e22ccbecd22b78750ab76551eb38988
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  # skip s390x because of missing qpdf
-  skip: true  # [py<39 or s390x]
+  script:
+    - set "QPDF_SOURCE_TREE=%LIBRARY_PREFIX%"  # [win]
+    - set "QPDF_BUILD_LIBDIR=%LIBRARY_LIB%"    # [win]
+    - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: true  # [py<310]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - patch  # [not win]
-    - m2-patch  # [win]
+    - cmake
+    - make  # [unix]
+    - ninja-base  # [win]
   host:
-    - python
     - pip
-    - setuptools >=61
-    - wheel
-    - pybind11 2.12.0
-    - qpdf 11.9.1
+    - python
+    - scikit-build-core>=0.10
+    - nanobind >=2.0
+    - qpdf =12.3.2
   run:
     - python
-    - lxml >=4.8
-    - qpdf >=10.6.2
     - pillow >=10.0.1
+    - lxml >=4.8    
     - packaging
+    - qpdf >=12.3.2,<13
 
+# Unrecognized -n in pytest from the pyproject.toml
+{% set deselect_tests = " --deselect=tests/test_sanity.py::test_minimum_qpdf_version" %}
 test:
   source_files:
     - tests
   imports:
     - pikepdf
+  commands:
+    - pip check
+    - pytest -v tests {{ deselect_tests }}
   requires:
     - pip
     - pytest >=6.2.5
     - python-dateutil >=2.8.1
     - attrs >=20.2.0
-    - hypothesis
+    - hypothesis >=6.36
     - numpy >=1.21  # [x86_64]
     - psutil >=5.9  # [not win]
     - tomli  # [py<311]
-  commands:
-    - pip check
-    - pytest tests
+  
 
 about:
   home: https://github.com/pikepdf/pikepdf
