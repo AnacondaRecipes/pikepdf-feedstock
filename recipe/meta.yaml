@@ -10,10 +10,13 @@ source:
   sha256: 4bebc59ac74411064e7c97a4036174023e22ccbecd22b78750ab76551eb38988
 
 build:
-  number: 0
+  number: 1
   script:
     - set "QPDF_SOURCE_TREE=%LIBRARY_PREFIX%"  # [win]
     - set "QPDF_BUILD_LIBDIR=%LIBRARY_LIB%"    # [win]
+    # Anaconda channel packages are failing the downstream security scanner
+    # because these test fixtures contain encrypted/password-protected PDFs.
+    - rm -f ${SRC_DIR}/tests/resources/form_dd0293.pdf ${SRC_DIR}/tests/resources/graph-encrypted.pdf
     - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   skip: true  # [py<310]
 
@@ -40,6 +43,34 @@ requirements:
 
 # Unrecognized -n in pytest from the pyproject.toml
 {% set deselect_tests = " --deselect=tests/test_sanity.py::test_minimum_qpdf_version" %}
+
+# These tests require encrypted PDF fixtures removed from the package
+# to avoid triggering downstream security scanners.
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_page_copy.py::test_add_pages_from_matches_job_field_structure" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_page_copy.py::test_add_pages_from_strip_removes_widgets" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPasswords::test_open_pdf_wrong_password" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPasswords::test_open_pdf_password_encoding" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPasswords::test_open_pdf_no_password_but_needed" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPasswords::test_open_pdf_user_password" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPermissions::test_some_permissions_missing" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPermissions::test_omit_encryption_removes_encryption" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_pdf.py::TestPermissions::test_permissions_preserved_on_save" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_sanity.py::test_open_pdf_password" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_acroform.py::test_choice" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_acroform.py::test_existing_value" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_acroform.py::test_disable_signatures" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_acroform.py::test_copy_form" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_canvas.py::TestSimpleFont::test_load" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_canvas.py::TestSimpleFont::test_unscaled_char_width_known" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_canvas.py::TestSimpleFont::test_convert_width" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_canvas.py::TestSimpleFont::test_unscaled_char_width_known2" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_encrypt.py::test_consistency_saving_removes_encryption" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_encrypt.py::test_save_without_encryption" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_encrypt.py::test_save_preserve_encryption" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_form.py::test_choice" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_form.py::test_signature_stamp" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_form.py::test_extended_appearance_generator_multiline_text" %}
+
 test:
   source_files:
     - tests
